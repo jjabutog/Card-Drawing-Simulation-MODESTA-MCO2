@@ -1,0 +1,2 @@
+# Card-Drawing-Simulation-MODESTA-MCO2
+simulates experimentsof drawing cards froma  normal deck of 52 cards and analyze  the results vis-à-vis  the idealdistribution.Assume  that  an  acehas  a  value  of  1,  and  that  a  jack,  queen,  and  king  have  values  of  10.As  much  as possible  the  simulated  experiments  should  include:  Binomial,  Negative  Binomial,  Hypergeometric,  and Multinomial experiments.
