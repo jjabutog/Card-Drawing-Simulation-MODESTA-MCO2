@@ -1,25 +1,24 @@
 package model;
 
+import enums.Rank;
+import enums.Suit;
+
 public class Cards {
-	private int value;
-	private int symbol;
-	
+	private final Rank rank;
+    private final Suit suit;
 
-	public int getValue() {
-		return value;
-	}
+    public Cards(Rank rank, Suit suit) {
+        this.rank = rank;
+        this.suit = suit;
+    }
 
-	public void setValue(int value) {
-		this.value = value;
-	}
+    public Rank getRank() {
+        return rank;
+    }
 
-	public int getSymbol() {
-		return symbol;
-	}
-
-	public void setSymbol(int symbol) {
-		this.symbol = symbol;
-	}
+    public Suit getSuit() {
+        return suit;
+    }
 	
 	
 
