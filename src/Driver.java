@@ -31,7 +31,7 @@ public final class Driver {
 	
 	public static void process(int numCards, int nTrials,Deck deck){
 		try{
-			PrintWriter writer = new PrintWriter("output/output.txt", "UTF-8");
+			PrintWriter writer = new PrintWriter("output.txt", "UTF-8");
             for (int i = 0; i < nTrials; i++) {
                 deck.shuffle();
                 writeFile( writer, deck, i, numCards);
