@@ -1,5 +1,7 @@
 package model;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 import enums.Rank;
 import enums.Suit;
 
@@ -23,6 +25,8 @@ public class Deck {
 	
 	public Cards drawCard(int num){
 		
+		
+		return cards[ThreadLocalRandom.current().nextInt(0,53)];
 	}
 	
 	
