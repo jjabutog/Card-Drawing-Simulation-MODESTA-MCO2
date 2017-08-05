@@ -4,8 +4,8 @@ import enums.Rank;
 import enums.Suit;
 
 public class Cards {
-	private final Rank rank;
-    private final Suit suit;
+	private Rank rank;
+    private Suit suit;
 
     public Cards(Rank rank, Suit suit) {
         this.rank = rank;
