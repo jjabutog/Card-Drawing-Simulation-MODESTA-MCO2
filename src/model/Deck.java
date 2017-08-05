@@ -47,10 +47,18 @@ public class Deck {
 	}
 	
 	
+	public void insertCard(Cards card){
+		cards.add(card);
+		shuffle();
+	}
 
 	
     public ArrayList<Cards> getCards() {
         return cards;
+    }
+    
+    public void setCards(ArrayList<Cards> cards){
+    	this.cards = cards;
     }
 
    
