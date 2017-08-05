@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.ThreadLocalRandom;
 
 import enums.Rank;
@@ -7,26 +9,34 @@ import enums.Suit;
 
 public class Deck {
 	private int numCard;
-	private Cards[] cards;
+	private ArrayList<Cards> cards;
 	
 	//initialize deck with 52 cards.
-	public Deck(int numCard){
+	public Deck(){
 		Rank[] ranks = Rank.values();
         Suit[] suits = Suit.values();
-        this.numCard = numCard;  //numCard = -1;
-		this.cards = new Cards[52];
+        
+        cards = new ArrayList<Cards>();
         for (Rank rank  : ranks)
             for(Suit suit : suits) {
-                this.numCard++;
-                cards[this.numCard] = new Cards(rank,suit);
+            	cards.add(new Cards(rank,suit));
             }
 		
 	}
 	
-	public Cards drawCard(int num){
+	public void shuffle() {
+		Collections.shuffle(cards);
+	}
+	
+	public Cards drawCardwithReplacement(){
 		
 		
 		return cards[ThreadLocalRandom.current().nextInt(0,53)];
+	}
+	
+	public Cards drawCardwithoutReplacement(){
+		
+		return cards.remove(0);
 	}
 	
 	
@@ -39,13 +49,11 @@ public class Deck {
         this.numCard = numCard;
     }
 
-    public Cards[] getCards() {
+    public ArrayList<Cards> getCards() {
         return cards;
     }
 
-    public void setCards(Cards[] cards) {
-        this.cards = cards;
-    }
+   
 	
 
 }
