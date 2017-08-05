@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import org.rosuda.JRI.Rengine;
 
+import model.Cards;
 import model.Deck;
 
 public final class Driver {
@@ -45,7 +46,18 @@ public final class Driver {
 
 	private static void writeFile(PrintWriter writer, Deck deck, int i, int numCards) {
 		// TODO Auto-generated method stub
-		
+		writer.println("------Trial #" + (i+1)+"------");
+
+        for (int j = 0; j < numCards; j++) {
+            Cards withoutReplacement = deck.drawCardwithoutReplacement();
+            writer.println("----Card #" + (j+1) +  "----");
+            writer.println("Without replacement: ");
+            writer.println("Card: " + withoutReplacement.getSuit() + " - " + withoutReplacement.getRank());
+            Cards withReplacement = deck.drawCardwithReplacement();
+            writer.println("With replacement: ");
+            writer.println("Card: " + withReplacement.getSuit() + " - " + withReplacement.getRank());
+        }
+        writer.println("\n");
 	}
 	
 	
