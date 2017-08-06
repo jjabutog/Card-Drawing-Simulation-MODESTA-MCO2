@@ -15,6 +15,7 @@ import java.awt.Insets;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import java.awt.CardLayout;
+import javax.swing.JCheckBox;
 
 public class Window {
 
@@ -110,6 +111,10 @@ public class Window {
 		JLabel lblActualProbability = new JLabel("Actual Probability");
 		lblActualProbability.setBounds(15, 201, 134, 20);
 		panel.add(lblActualProbability);
+		
+		JCheckBox chckbxNewCheckBox = new JCheckBox("Replacement");
+		chckbxNewCheckBox.setBounds(73, 236, 139, 29);
+		panel.add(chckbxNewCheckBox);
 		
 		JPanel panel_5 = new JPanel();
 		panel_5.setBounds(335, 0, 1070, 619);
