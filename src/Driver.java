@@ -49,15 +49,67 @@ public final class Driver {
 			e.printStackTrace();
 		}
 	}
+	
+	//puts all cards drawn in an array - without replacement
+	private static Cards[] DrawWithoutReplacement(Deck deck,int numCards){
+		Cards[] withoutReplacement = new Cards[numCards];
+		
+		for(int i=0;i<numCards;i++){
+			withoutReplacement[i] = deck.drawCardwithoutReplacement();
+		}
+		return withoutReplacement;
+	}
+	
+	//puts all cards drawn in an array - with replacement
+	private static Cards[] DrawWithReplacement(Deck deck,int numCards){
+		Cards[] withReplacement = new Cards[numCards];
+		
+		for(int i=0;i<numCards;i++){
+			withReplacement[i] = deck.drawCardwithReplacement();
+		}
+		return withReplacement;
+	}
+	
+	//get sum of a draw card. use this function to get sum of with replacement and without replacement
+	private static int GetTotal(Cards[] drawCards,int numCards){
+		int total = 0;
+		
+		for(int i=0;i<numCards;i++){
+			total += drawCards[i].getValue();
+		}
+		
+		return total;
+	}
 
 
-
+	//write on file
 	private static void writeFile(PrintWriter writer, Deck deck, int i, int numCards) {
 		// TODO Auto-generated method stub
 		int wTotal = 0; 
 		int woTotal = 0;
+		
+		Cards[] withReplacement = DrawWithReplacement(deck,numCards);
+		Cards[] withoutReplacement =DrawWithoutReplacement(deck,numCards);
+		wTotal = GetTotal(withReplacement,numCards);
+		woTotal = GetTotal(withoutReplacement,numCards);
+		
 		writer.println("Trial #" + (i+1));
-
+		
+		
+		writer.println("Without replacement: ");
+		for(int j=0; j< numCards; j++){
+			writer.println("Card #" + (j+1) );
+			writer.println("Card: "  + withoutReplacement[j].getRank()+ " of "  + withoutReplacement[j].getSuit() );
+			
+		}
+		
+		writer.println("With replacement: ");
+		for(int j=0; j<numCards; j++){
+			writer.println("Card #" + (j+1) );
+			writer.println("Card: " + withReplacement[j].getRank()+ " of "+ withReplacement[j].getSuit());
+		}
+		
+		/*
         for (int j = 0; j < numCards; j++) {
             Cards withoutReplacement = deck.drawCardwithoutReplacement();
             woTotal += withoutReplacement.getValue();
@@ -70,7 +122,8 @@ public final class Driver {
             writer.println("Card: " + withReplacement.getRank()+ " of "+ withReplacement.getSuit()   );
             writer.println("\n");
         }
-        
+        */
+		
         writer.println("Without replacement total: " + woTotal);
         writer.println("With replacement total: " + wTotal);
         writer.println("\n");
