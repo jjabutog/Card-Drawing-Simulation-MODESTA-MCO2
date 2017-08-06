@@ -1,10 +1,13 @@
 package view;
 import java.awt.EventQueue;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
 import org.rosuda.JRI.Rengine;
+
+import com.objectplanet.chart.BarChart;
+
 import org.rosuda.JRI.REXP;
 import org.rosuda.JRI.RList;
 import org.rosuda.JRI.RVector;
@@ -14,6 +17,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.Frame;
+
 import javax.swing.BoxLayout;
 import javax.swing.JTextField;
 
@@ -33,6 +39,8 @@ import java.io.PrintWriter;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import java.awt.CardLayout;
+import java.awt.Color;
+
 import javax.swing.JCheckBox;
 
 public class Window {
@@ -187,6 +195,7 @@ public class Window {
 	private JCheckBox replacement;
 	private JTextArea log;
 	private Rengine engine; 
+	private double maxIdealProb;
     
 
 
@@ -265,6 +274,23 @@ public class Window {
         	    
         		
         		process(numCards, nTrials, desiredTotal, deck, wdTotal, wodTotal);
+        		
+        		int[] possibleTotals = computeTotalPossibleSums(numCards, replacement.isSelected());
+        		int[] allTotals = idealCombinations(numCards);
+        		double[] probs = idealTotals(numCards, possibleTotals);
+        		
+        		engine.rniPutIntArray(allTotals);
+        		engine.assign("allTotals", allTotals);
+        		System.out.print(""+ engine.eval("allTotals"));
+        		
+        		
+        		ideMean.setText("" + engine.eval("mean( allTotals )").asDouble() );
+        		ideSD.setText(""  + engine.eval("sd(allTotals )").asDouble());
+        		ideVar.setText("" + engine.eval("var(  allTotals )").asDouble());
+        		ideMode.setText("" + engine.eval("as.numeric(names(sort(-table(allTotals))))").asDouble());
+        		ideMedian.setText("" + engine.eval("median(  allTotals )").asDouble());
+        		
+        		makeHistogram(probs, possibleTotals, "Ideal Probabilities");
         		
             }
         });
@@ -478,8 +504,7 @@ public class Window {
             
             else {
             	actualProb.setText(""+ (float)wodTotal/(float)nTrials);
-            	idealProb.setText("" + idealTotal(numCards, desiredTotal));
-            	
+            	idealProb.setText(""+ idealTotal(numCards, desiredTotal));
             }
             
             writer.close();
@@ -521,6 +546,34 @@ public class Window {
 		return total;
 	}
 	
+	private int[] idealCombinations(int numCards) {
+		String deckVector = "c(1,2,3,4,5,6,7,8,9,10,11,12,13,"
+				+ "1,2,3,4,5,6,7,8,9,10,11,12,13,"
+				+ "1,2,3,4,5,6,7,8,9,10,11,12,13,"
+				+ "1,2,3,4,5,6,7,8,9,10,11,12,13)";
+	    engine.eval("deckTotal=" + deckVector);
+	   
+	    
+	    REXP sumCombs =  engine.eval("draw2 <- combn(deckTotal, " + numCards + ", sum)");
+	    double [] posTotal1Double = sumCombs.asDoubleArray();
+	    	    
+	    int [] intPosTotal1 = new int[posTotal1Double.length];
+	    for(int i = 0; i < intPosTotal1.length; i++) {
+	    	intPosTotal1[i] = (int) posTotal1Double[i];
+//	    	System.out.println(intPosTotal1[i] );
+	    }
+	    
+	    Arrays.sort(intPosTotal1);
+	    
+	    for(int i = 0; i < intPosTotal1.length; i++) {
+//	    	System.out.println(intPosTotal1[i] );
+	    }
+	    
+	    return intPosTotal1;
+	    
+	}
+	
+
 	private double idealTotal(int numCards, int desiredTotal) {
 
 		
@@ -534,6 +587,45 @@ public class Window {
 		return engine.eval("nrow(draw2[draw2==" + desiredTotal + "])/nrow(draw2)").asDouble();
 	}
 	
+	private double[] idealTotals(int numCards, int[] possibleTotals) {
+		
+		int[] totalpos = possibleTotals;
+		
+		double[] probs = new double[totalpos.length];
+		
+		String deckVector = "c(1,2,3,4,5,6,7,8,9,10,11,12,13,"
+				+ "1,2,3,4,5,6,7,8,9,10,11,12,13,"
+				+ "1,2,3,4,5,6,7,8,9,10,11,12,13,"
+				+ "1,2,3,4,5,6,7,8,9,10,11,12,13)";
+	    engine.eval("deckTotal=" + deckVector);
+	    
+	    engine.eval("draw2 <- combn(deckTotal, " + numCards + ", sum)"); 
+	    
+	    maxIdealProb = 0.0;
+	    
+	    for(int i = 0; i < totalpos.length; i++) {
+	    	probs[i] = engine.eval("nrow(draw2[draw2==" + totalpos[i] + "])/nrow(draw2)").asDouble();
+	    	if(probs[i] > maxIdealProb) {
+	    		maxIdealProb = probs[i];
+	    	}
+	    	
+	    }
+	    
+//	    for(int i = 0; i < probs.length; i++) {
+////	    	System.out.println(probs[i]);
+//	    }
+
+	    return probs;
+	}
+	
+		
+		
+//	private double idealTotalReplacement(int numCards, int desiredTotal) {
+//		
+//		
+//		
+//	}
+//	
 	private double[] computeIdealProbabilities(int[] possibleSums) {
 		
 		
@@ -708,6 +800,50 @@ public class Window {
         writer.println("Without replacement total: \n" + GetTotal(withoutReplacement,numCards));
         writer.println("With replacement total: \n" + GetTotal(withReplacement,numCards));
         writer.println("\n");
+	}
+	
+	public void makeHistogram(double[] sampleValues, int[] possibleTotals, String title){
+		
+		String[] legendLabels = new String[sampleValues.length]; 
+        
+		for(int i =0 ; i< legendLabels.length; i++){
+			legendLabels[i]= Double.toString(sampleValues[i]);
+		}
+		
+		String[] sampleLabels = new String[sampleValues.length];
+		for(int i =0 ; i< sampleLabels.length; i++){
+			sampleLabels[i]= Integer.toString(possibleTotals[i]);
+		}
+		
+		Color[] sampleColors = new Color[] {new Color(0x8AD0F5),new Color(0x8AB8F5),new Color(0x899BF4),new Color(0xAE89F4),new Color(0xE889F4),new Color(0xF58AC9),new Color(0xF68B9B),new Color(0xF69D8B),new Color(0xF6B58B),new Color(0xF6C78B),new Color(0xF6D88B),new Color(0xF6E88B),new Color(0xF6F68B),new Color(0xDCF58A),new Color(0x9AF58A),new Color(0x89F4D8)};
+        
+                
+        BarChart chart = new BarChart();
+        chart.setSampleCount(sampleValues.length);
+        chart.setSampleValues(0, sampleValues);
+        chart.setSampleColors(sampleColors);
+        chart.setMultiColorOn(true);
+        chart.setRange(0, maxIdealProb);
+        chart.setFont("rangeLabelFont", new Font("Arial", Font.BOLD, 13));
+        chart.setBarWidth(1);
+        chart.setLegendLabels(legendLabels);
+        chart.setLegendOn(true);
+        chart.getBarLabels();
+        chart.setBarLabelsOn(true);
+        for(int i =0 ; i< sampleLabels.length; i++){
+        	 chart.setSampleLabel(i, sampleLabels[i]);
+		}
+        chart.setFont("legendFont", new Font("Arial", Font.BOLD, 10));
+        chart.setBackground(Color.white);
+        chart.setTitle(title);
+        chart.setTitleOn(true);
+        
+        com.objectplanet.chart.NonFlickerPanel p = new com.objectplanet.chart.NonFlickerPanel(new BorderLayout());
+        p.add("Center", chart);
+        Frame f = new Frame();
+        f.add("Center", p);
+        f.setSize(450,320);
+        f.setVisible(true);
 	}
 	
 }
