@@ -16,13 +16,15 @@ public final class Driver {
 	public static void start() {
 		// TODO Auto-generated method stub
 		Deck deck = new Deck();
-		int numCards, nTrials;
+		int numCards, nTrials, desiredTotal;
 		Scanner sc= new Scanner(System.in);
 		
 		System.out.println("number of cards to be drawn. 1 - 5: ");
 		numCards = sc.nextInt();
 		System.out.println("number of trials:");
 		nTrials = sc.nextInt();
+		//System.out.println("desired sum:");
+		//desiredTotal = sc.nextInt();
 		
 	    Rengine engine = new Rengine(new String[] { "--no-save" }, false, null);
 
@@ -40,6 +42,7 @@ public final class Driver {
             for (int i = 0; i < nTrials; i++) {
                 deck.shuffle();
                 writeFile( writer, deck, i, numCards);
+                deck.ResetDeck();
             }
             writer.close();
 		} catch(IOException e){
