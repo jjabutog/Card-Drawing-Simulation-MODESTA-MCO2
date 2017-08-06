@@ -12,6 +12,9 @@ import javax.swing.JButton;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import java.awt.CardLayout;
 
 public class Window {
 
@@ -96,5 +99,13 @@ public class Window {
 		
 		JPanel panel_4 = new JPanel();
 		panel_5.add(panel_4);
+		
+		JPanel panel_6 = new JPanel();
+		panel_6.setBounds(15, 16, 305, 363);
+		frame.getContentPane().add(panel_6);
+		panel_6.setLayout(new CardLayout(0, 0));
+		
+		JTextArea textArea = new JTextArea();
+		panel_6.add(textArea, "name_405083374200043");
 	}
 }
