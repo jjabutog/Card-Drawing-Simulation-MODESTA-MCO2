@@ -186,6 +186,9 @@ public class Window {
 	private JButton btnStart;
 	private JCheckBox replacement;
 	private JTextArea log;
+	private Rengine engine; 
+    
+
 
 	/**
 	 * Launch the application.
@@ -214,6 +217,7 @@ public class Window {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1427, 675);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -425,6 +429,12 @@ public class Window {
 		
 		log = new JTextArea();
 		panel_6.add(log);
+		
+		try {
+			engine = new Rengine(new String[] { "--no-save" }, false, null);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 	
 	public void process(int numCards, int nTrials, int desiredTotal, Deck deck,int wdTotal, int wodTotal){
@@ -468,6 +478,7 @@ public class Window {
             
             else {
             	actualProb.setText(""+ (float)wodTotal/(float)nTrials);
+            	idealProb.setText("" + idealTotal(numCards, desiredTotal));
             	
             }
             
@@ -510,6 +521,26 @@ public class Window {
 		return total;
 	}
 	
+	private double idealTotal(int numCards, int desiredTotal) {
+
+		
+		// TODO Auto-generated method stub
+		String deckVector = "c(1,2,3,4,5,6,7,8,9,10,11,12,13,"
+				+ "1,2,3,4,5,6,7,8,9,10,11,12,13,"
+				+ "1,2,3,4,5,6,7,8,9,10,11,12,13,"
+				+ "1,2,3,4,5,6,7,8,9,10,11,12,13)";
+	    engine.eval("deckTotal=" + deckVector);
+	    engine.eval("draw2 <- combn(deckTotal, " + numCards + ", sum)"); 
+		return engine.eval("nrow(draw2[draw2==" + desiredTotal + "])/nrow(draw2)").asDouble();
+	}
+	
+	private double[] computeIdealProbabilities(int[] possibleSums) {
+		
+		
+		double[] array = new double[2];
+		return array;
+	}
+	
 	private int[] computeTotalPossibleSums(int numDraws, boolean wReplacement) {
 	   
 		String deckVector = "c(1,2,3,4,5,6,7,8,9,10,11,12,13,1,2,3,4,5,6,7,8,9,10,11,12,13,1,2,3,4,5,6,7,8,9,10,11,12,13,1,2,3,4,5,6,7,8,9,10,11,12,13)";
@@ -517,8 +548,6 @@ public class Window {
 	    
 	    String deckVector2 = "c(1,2,3,4,5,6,7,8,9,10,11,12,13)";
 	    
-	    Rengine engine = new Rengine(new String[] { "--no-save" }, false, null);
-
 	    
 	    engine.eval("deckTotal=" + deckVector);
 	    engine.eval("deckTotal2=" + deckVector2);
