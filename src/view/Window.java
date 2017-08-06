@@ -262,7 +262,10 @@ public class Window {
             	numCards = Integer.parseInt(getNumDraws().getText());
         		nTrials = Integer.parseInt(getNumTrials().getText());
         		desiredTotal = Integer.parseInt(getDesiredTotal().getText());
-        	    
+        	    //freqcount with replacement
+        		int[] actualwFreqCount = computeTotalPossibleSums(numCards,true);
+        		//freqcount witnout replacement
+        		int[] actualwoFreqCount = computeTotalPossibleSums(numCards,false);
         		
         		process(numCards, nTrials, desiredTotal, deck, wdTotal, wodTotal);
         		
