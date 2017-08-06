@@ -16,9 +16,10 @@ public class Cards {
 		this.value = value;
 	}
 
-	public Cards(Rank rank, Suit suit) {
+	public Cards(Rank rank, Suit suit, int value) {
         this.rank = rank;
         this.suit = suit;
+        this.value = value;
     }
 
     public Rank getRank() {

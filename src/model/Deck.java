@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.ThreadLocalRandom;
+
 
 import enums.Rank;
 import enums.Suit;
@@ -22,52 +22,78 @@ public class Deck {
         for (Rank rank  : ranks)
             for(Suit suit : suits) {
             	
-            	Cards card = new Cards(rank, suit);
+            	Cards card = new Cards(rank, suit,0);
             	
             	switch (rank) {
             	
-            		case ACE: card.setValue(1);
+            		case ACE: 
+            			card.setValue(1);
+            			cards.add(new Cards(rank,suit,1));
             		break;
             		
-            		case TWO: card.setValue(2);
+            		case TWO: 
+            			card.setValue(2);
+            			cards.add(new Cards(rank,suit,2));
             		break;
             		
-            		case THREE: card.setValue(3);
+            		case THREE: 
+            			card.setValue(3);
+            			cards.add(new Cards(rank,suit,3));
             		break;
             		
-            		case FOUR: card.setValue(4);
+            		case FOUR: 
+            			card.setValue(4);
+            			cards.add(new Cards(rank,suit,4));
             		break;
             		
-            		case FIVE: card.setValue(5);
+            		case FIVE: 
+            			card.setValue(5);
+            			cards.add(new Cards(rank,suit,5));
             		break;
             		
-            		case SIX: card.setValue(6);
+            		case SIX: 
+            			card.setValue(6);
+            			cards.add(new Cards(rank,suit,6));
             		break;
             		
-            		case SEVEN: card.setValue(7);
+            		case SEVEN: 
+            			card.setValue(7);
+            			cards.add(new Cards(rank,suit,7));
             		break;
             		
-            		case EIGHT: card.setValue(8);
+            		case EIGHT: 
+            			card.setValue(8);
+            			cards.add(new Cards(rank,suit,8));
             		break;
             		
-            		case NINE: card.setValue(9);
+            		case NINE: 
+            			card.setValue(9);
+            			cards.add(new Cards(rank,suit,9));
             		break;
             		
-            		case TEN: card.setValue(10);
+            		case TEN: 
+            			card.setValue(10);
+            			cards.add(new Cards(rank,suit,10));
             		break;
             		
-            		case JACK: card.setValue(11);
+            		case JACK: 
+            			card.setValue(11);
+            			cards.add(new Cards(rank,suit,11));
             		break;
             		
-            		case QUEEN: card.setValue(12);
+            		case QUEEN: 
+            			card.setValue(12);
+            			cards.add(new Cards(rank,suit,12));
             		break;
             		
-            		case KING: card.setValue(13);
+            		case KING: 
+            			card.setValue(13);
+            			cards.add(new Cards(rank,suit,13));
             		break;
             		
             	}
             	          	
-            	cards.add(new Cards(rank,suit));
+            	
             }
 		
 	}

@@ -27,9 +27,10 @@ public final class Driver {
 	    Rengine engine = new Rengine(new String[] { "--no-save" }, false, null);
 
 		
-		/*
+		
 		process(numCards,nTrials,deck);
-		*/
+		
+		System.out.println("oks");
 		
 	}
 	
@@ -50,18 +51,34 @@ public final class Driver {
 
 	private static void writeFile(PrintWriter writer, Deck deck, int i, int numCards) {
 		// TODO Auto-generated method stub
-		writer.println("------Trial #" + (i+1)+"------");
+		int wTotal = 0; 
+		int woTotal = 0;
+		writer.println("Trial #" + (i+1));
 
         for (int j = 0; j < numCards; j++) {
             Cards withoutReplacement = deck.drawCardwithoutReplacement();
-            writer.println("----Card #" + (j+1) +  "----");
+            woTotal += withoutReplacement.getValue();
+            writer.println("Card #" + (j+1) );
             writer.println("Without replacement: ");
-            writer.println("Card: " + withoutReplacement.getSuit() + " - " + withoutReplacement.getRank());
+            writer.println("Card: "  + withoutReplacement.getRank()+ " of "  + withoutReplacement.getSuit() );
             Cards withReplacement = deck.drawCardwithReplacement();
+            wTotal += withReplacement.getValue();
             writer.println("With replacement: ");
-            writer.println("Card: " + withReplacement.getSuit() + " - " + withReplacement.getRank());
+            writer.println("Card: " + withReplacement.getRank()+ " of "+ withReplacement.getSuit()   );
+            writer.println("\n");
         }
+        
+        writer.println("Without replacement total: " + woTotal);
+        writer.println("With replacement total: " + wTotal);
         writer.println("\n");
+	}
+
+
+
+	private static void DesiredTotal(int wTotal, int woTotal) {
+		// TODO Auto-generated method stub
+		
+		
 	}
 	
 	
