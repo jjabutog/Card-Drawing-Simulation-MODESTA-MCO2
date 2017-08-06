@@ -336,7 +336,7 @@ public class Window {
         		actMed.setText("" + engine.eval("median(  nativeTrials )").asDouble());
         		
         		makeFrequencyChart(freqCountActual, possibleTotals, "Actual Probabilities");
-        		makeHistogram(probs, possibleTotals, "Ideal Probabilities");
+        		makeProbabilityChart(probs, possibleTotals, "Ideal Probabilities");
         		
             }
         });
@@ -850,12 +850,15 @@ public class Window {
 		
 		String[] sampleLabels = new String[frequencyCount.length];
 		for(int i =0 ; i< sampleLabels.length; i++){
-			sampleLabels[i]= Integer.toString(i+1);
+			sampleLabels[i]= Integer.toString(possibleSums[i]);
 		}
 		String[] legendLabels = new String[frequencyCount.length];
 		for(int i =0 ; i< legendLabels.length; i++){
 			legendLabels[i]= Double.toString(frequencyCount.length);
 		}
+		
+		Arrays.sort(frequencyCount);
+
 		
     	Color[] c = new Color[] {new Color(0xFF7310)};
     	BarChart chart = new BarChart();
@@ -864,7 +867,7 @@ public class Window {
     	chart.setSampleValues(0, values);
     	chart.setSampleColors(c);
     	chart.setBackground(Color.white);
-    	chart.setRange(0, possibleSums[possibleSums.length-1] + 1);
+    	chart.setRange(0, frequencyCount[frequencyCount.length-1] + 1);
     	chart.setTitle(title);
     	chart.setTitleOn(true);
     	chart.setSampleLabels(sampleLabels);
@@ -919,7 +922,7 @@ public class Window {
         writer.println("\n");
 	}
 	
-	public void makeHistogram(double[] sampleValues, int[] possibleTotals, String title){
+	public void makeProbabilityChart(double[] sampleValues, int[] possibleTotals, String title){
 		
 		String[] legendLabels = new String[sampleValues.length]; 
         
