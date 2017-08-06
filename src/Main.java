@@ -97,27 +97,27 @@ public class Main {
 
 	   
     	    
-	    int [] intPosTotal1Rep = new int[13];
+	    int [] intPosTotal1Rep = new int[14];
 	    for(int i = 1; i < intPosTotal1Rep.length; i++) {
 	    	intPosTotal1Rep[i] = i;
 	    }
 	    
-	    int [] intPosTotal2Rep = new int[26];
+	    int [] intPosTotal2Rep = new int[27];
 	    for(int i = 2; i < intPosTotal2Rep.length; i++) {
 	    	intPosTotal2Rep[i] = i;
 	    }
 	    
-	    int [] intPosTotal3Rep = new int[39];
+	    int [] intPosTotal3Rep = new int[40];
 	    for(int i = 3; i < intPosTotal3Rep.length; i++) {
 	    	intPosTotal3Rep[i] = i;
 	    }
 	    
-	    int [] intPosTotal4Rep = new int[52];
+	    int [] intPosTotal4Rep = new int[53];
 	    for(int i = 4; i < intPosTotal4Rep.length; i++) {
 	    	intPosTotal4Rep[i] = i;
 	    }
 	    
-	    int [] intPosTotal5Rep = new int[65];
+	    int [] intPosTotal5Rep = new int[66];
 	    for(int i = 5; i < intPosTotal5Rep.length; i++) {
 	    	intPosTotal5Rep[i] = i;
 	    }

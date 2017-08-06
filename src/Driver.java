@@ -31,7 +31,7 @@ public final class Driver {
 		
 		process(numCards,nTrials,desiredTotal,deck,wdTotal,wodTotal);
 		
-		System.out.println("oks");
+		
 		
 	}
 	
