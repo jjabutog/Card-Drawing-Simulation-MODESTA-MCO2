@@ -17,33 +17,52 @@ public final class Driver {
 		// TODO Auto-generated method stub
 		Deck deck = new Deck();
 		int numCards, nTrials, desiredTotal;
+		int wdTotal = 0;
+		int wodTotal = 0;
+		
 		Scanner sc= new Scanner(System.in);
 		
 		System.out.println("number of cards to be drawn. 1 - 5: ");
 		numCards = sc.nextInt();
 		System.out.println("number of trials:");
 		nTrials = sc.nextInt();
-		//System.out.println("desired sum:");
-		//desiredTotal = sc.nextInt();
+		System.out.println("desired sum:");
+		desiredTotal = sc.nextInt();
 		
-	    Rengine engine = new Rengine(new String[] { "--no-save" }, false, null);
+		
+		
+		
+		
 
-		
-		
-		process(numCards,nTrials,deck);
+		process(numCards,nTrials,desiredTotal,deck,wdTotal,wodTotal);
 		
 		System.out.println("oks");
 		
 	}
 	
-	public static void process(int numCards, int nTrials,Deck deck){
+	public static void process(int numCards, int nTrials, int desiredTotal, Deck deck,int wdTotal, int wodTotal){
+		
 		try{
 			PrintWriter writer = new PrintWriter("output.txt", "UTF-8");
             for (int i = 0; i < nTrials; i++) {
                 deck.shuffle();
-                writeFile( writer, deck, i, numCards);
+                Cards[] withReplacement = DrawWithReplacement(deck,numCards);
+        		Cards[] withoutReplacement =DrawWithoutReplacement(deck,numCards);
+        		int wTotal = GetTotal(withReplacement,numCards);
+        		int woTotal = GetTotal(withoutReplacement,numCards);
+        		
+        		if(desiredTotal==wTotal)
+        			wdTotal++;
+        		else if(desiredTotal==woTotal)
+        			wodTotal++;
+        	   
+        	    
+        	    
+                writeFile( writer, deck, i, numCards,withReplacement,withoutReplacement,wdTotal,wodTotal);
                 deck.ResetDeck();
             }
+            writer.println("actual probability with replacement: " + wdTotal+"/"+nTrials);
+            writer.println("actual probability without replacement: " + wodTotal+"/"+nTrials);
             writer.close();
 		} catch(IOException e){
 			e.printStackTrace();
@@ -83,15 +102,9 @@ public final class Driver {
 
 
 	//write on file
-	private static void writeFile(PrintWriter writer, Deck deck, int i, int numCards) {
+	private static void writeFile(PrintWriter writer, Deck deck, int i, int numCards, Cards[] withReplacement, Cards[] withoutReplacement,int wdTotal, int wodTotal) {
 		// TODO Auto-generated method stub
-		int wTotal = 0; 
-		int woTotal = 0;
 		
-		Cards[] withReplacement = DrawWithReplacement(deck,numCards);
-		Cards[] withoutReplacement =DrawWithoutReplacement(deck,numCards);
-		wTotal = GetTotal(withReplacement,numCards);
-		woTotal = GetTotal(withoutReplacement,numCards);
 		
 		writer.println("Trial #" + (i+1));
 		
@@ -124,8 +137,8 @@ public final class Driver {
         }
         */
 		
-        writer.println("Without replacement total: " + woTotal);
-        writer.println("With replacement total: " + wTotal);
+        writer.println("Without replacement total: \n" + GetTotal(withoutReplacement,numCards));
+        writer.println("With replacement total: \n" + GetTotal(withReplacement,numCards));
         writer.println("\n");
 	}
 
