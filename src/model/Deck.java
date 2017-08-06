@@ -21,6 +21,52 @@ public class Deck {
         //for loop to populate the deck
         for (Rank rank  : ranks)
             for(Suit suit : suits) {
+            	
+            	Cards card = new Cards(rank, suit);
+            	
+            	switch (rank) {
+            	
+            		case ACE: card.setValue(1);
+            		break;
+            		
+            		case TWO: card.setValue(2);
+            		break;
+            		
+            		case THREE: card.setValue(3);
+            		break;
+            		
+            		case FOUR: card.setValue(4);
+            		break;
+            		
+            		case FIVE: card.setValue(5);
+            		break;
+            		
+            		case SIX: card.setValue(6);
+            		break;
+            		
+            		case SEVEN: card.setValue(7);
+            		break;
+            		
+            		case EIGHT: card.setValue(8);
+            		break;
+            		
+            		case NINE: card.setValue(9);
+            		break;
+            		
+            		case TEN: card.setValue(10);
+            		break;
+            		
+            		case JACK: card.setValue(11);
+            		break;
+            		
+            		case QUEEN: card.setValue(12);
+            		break;
+            		
+            		case KING: card.setValue(13);
+            		break;
+            		
+            	}
+            	          	
             	cards.add(new Cards(rank,suit));
             }
 		

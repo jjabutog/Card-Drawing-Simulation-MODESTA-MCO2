@@ -24,8 +24,12 @@ public final class Driver {
 		System.out.println("number of trials:");
 		nTrials = sc.nextInt();
 		
-		process(numCards,nTrials,deck);
+	    Rengine engine = new Rengine(new String[] { "--no-save" }, false, null);
+
 		
+		/*
+		process(numCards,nTrials,deck);
+		*/
 		
 	}
 	
