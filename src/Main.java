@@ -8,14 +8,27 @@ import org.rosuda.JRI.RVector;
 
 import model.Cards;
 import model.Deck;
+import view.Window;
 
 public class Main {
 	public static void main(String[] args){
 		
-//		Driver.start();
+////		Driver.start();
+//		Deck deck = new Deck();
+//		int numCards, nTrials, desiredTotal;
+//		int wdTotal = 0;
+//		int wodTotal = 0;
 		
+		Window window = new Window();
+		window.getFrame().setVisible(true);
 	    
-	    
+//		numCards = Integer.parseInt(window.getNumDraws().getText());
+//		nTrials = Integer.parseInt(window.getNumTrials().getText());
+//		desiredTotal = Integer.parseInt(window.getDesiredTotal().getText());
+//	    
+//		
+//		Driver.process(numCards, nTrials, desiredTotal, deck, wdTotal, wodTotal);
+//		
 	    String deckVector = "c(1,2,3,4,5,6,7,8,9,10,11,12,13,1,2,3,4,5,6,7,8,9,10,11,12,13,1,2,3,4,5,6,7,8,9,10,11,12,13,1,2,3,4,5,6,7,8,9,10,11,12,13)";
 	    		     
 	    

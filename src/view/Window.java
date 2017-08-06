@@ -7,11 +7,20 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JTextField;
+
+import model.Cards;
+import model.Deck;
+
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import java.awt.CardLayout;
@@ -19,37 +28,171 @@ import javax.swing.JCheckBox;
 
 public class Window {
 
+
 	private JFrame frame;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
-	private JTextField textField_9;
-	private JTextField textField_4;
-	private JTextField textField_10;
-	private JTextField textField_11;
-	private JTextField textField_12;
-	private JTextField textField_13;
+	
+	public JTextField getNumDraws() {
+		return numDraws;
+	}
+
+	public void setNumDraws(JTextField numDraws) {
+		this.numDraws = numDraws;
+	}
+	
+	public JFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+
+	public JTextField getDesiredTotal() {
+		return desiredTotal;
+	}
+
+	public void setDesiredTotal(JTextField desiredTotal) {
+		this.desiredTotal = desiredTotal;
+	}
+
+	public JTextField getNumTrials() {
+		return numTrials;
+	}
+
+	public void setNumTrials(JTextField numTrials) {
+		this.numTrials = numTrials;
+	}
+
+	public JTextField getIdealProb() {
+		return idealProb;
+	}
+
+	public void setIdealProb(JTextField idealProb) {
+		this.idealProb = idealProb;
+	}
+
+	public JTextField getActualProb() {
+		return actualProb;
+	}
+
+	public void setActualProb(JTextField actualProb) {
+		this.actualProb = actualProb;
+	}
+
+	public JTextField getActMean() {
+		return actMean;
+	}
+
+	public void setActMean(JTextField actMean) {
+		this.actMean = actMean;
+	}
+
+	public JTextField getActVar() {
+		return actVar;
+	}
+
+	public void setActVar(JTextField actVar) {
+		this.actVar = actVar;
+	}
+
+	public JTextField getActSD() {
+		return actSD;
+	}
+
+	public void setActSD(JTextField actSD) {
+		this.actSD = actSD;
+	}
+
+	public JTextField getActMed() {
+		return actMed;
+	}
+
+	public void setActMed(JTextField actMed) {
+		this.actMed = actMed;
+	}
+
+	public JTextField getActMode() {
+		return actMode;
+	}
+
+	public void setActMode(JTextField actMode) {
+		this.actMode = actMode;
+	}
+
+	public JTextField getIdeVar() {
+		return ideVar;
+	}
+
+	public void setIdeVar(JTextField ideVar) {
+		this.ideVar = ideVar;
+	}
+
+	public JTextField getIdeMean() {
+		return ideMean;
+	}
+
+	public void setIdeMean(JTextField ideMean) {
+		this.ideMean = ideMean;
+	}
+
+	public JTextField getIdeMode() {
+		return ideMode;
+	}
+
+	public void setIdeMode(JTextField ideMode) {
+		this.ideMode = ideMode;
+	}
+
+	public JTextField getIdeMedian() {
+		return ideMedian;
+	}
+
+	public void setIdeMedian(JTextField ideMedian) {
+		this.ideMedian = ideMedian;
+	}
+
+	public JTextField getIdeSD() {
+		return ideSD;
+	}
+
+	public void setIdeSD(JTextField ideSD) {
+		this.ideSD = ideSD;
+	}
+
+	private JTextField desiredTotal;
+	private JTextField numTrials;
+	private JTextField idealProb;
+	private JTextField actualProb;
+	private JTextField actMean;
+	private JTextField actVar;
+	private JTextField actSD;
+	private JTextField actMed;
+	private JTextField actMode;
+	private JTextField ideVar;
+	private JTextField ideMean;
+	private JTextField ideMode;
+	private JTextField ideMedian;
+	private JTextField ideSD;
+	private JTextField numDraws;
+	private JButton btnStart;
+	private JCheckBox replacement;
+	private JTextArea log;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Window window = new Window();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					Window window = new Window();
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the application.
@@ -68,53 +211,84 @@ public class Window {
 		frame.getContentPane().setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(15, 251, 305, 352);
+		panel.setBounds(15, 203, 305, 400);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
-		textField = new JTextField();
-		textField.setBounds(176, 89, 92, 26);
-		panel.add(textField);
-		textField.setColumns(10);
+		desiredTotal = new JTextField();
+		desiredTotal.setBounds(176, 134, 92, 26);
+		panel.add(desiredTotal);
+		desiredTotal.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(176, 34, 92, 26);
-		panel.add(textField_1);
+		numTrials = new JTextField();
+		numTrials.setColumns(10);
+		numTrials.setBounds(176, 34, 92, 26);
+		panel.add(numTrials);
 		
 		JLabel lblNoOfTrials = new JLabel("No. of Trials");
 		lblNoOfTrials.setBounds(15, 37, 92, 20);
 		panel.add(lblNoOfTrials);
 		
 		JLabel lblDesiredTotal = new JLabel("Desired Total");
-		lblDesiredTotal.setBounds(15, 92, 117, 20);
+		lblDesiredTotal.setBounds(15, 137, 117, 20);
 		panel.add(lblDesiredTotal);
 		
-		JButton btnStart = new JButton("START");
-		btnStart.setBounds(88, 295, 115, 29);
+		btnStart = new JButton("START");
+		btnStart.setBounds(88, 355, 115, 29);
+		btnStart.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	
+            	log.setText("");
+            	
+            	Deck deck = new Deck();
+        		int numCards, nTrials, desiredTotal;
+        		int wdTotal = 0;
+        		int wodTotal = 0;
+            	
+            	numCards = Integer.parseInt(getNumDraws().getText());
+        		nTrials = Integer.parseInt(getNumTrials().getText());
+        		desiredTotal = Integer.parseInt(getDesiredTotal().getText());
+        	    
+        		
+        		process(numCards, nTrials, desiredTotal, deck, wdTotal, wodTotal);
+        		
+            }
+        });
+		
+		
 		panel.add(btnStart);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(176, 143, 92, 26);
-		panel.add(textField_2);
-		textField_2.setColumns(10);
+		idealProb = new JTextField();
+		idealProb.setBounds(176, 187, 92, 26);
+		panel.add(idealProb);
+		idealProb.setColumns(10);
 		
 		JLabel lblIdealProbability = new JLabel("Ideal Probability");
-		lblIdealProbability.setBounds(15, 146, 117, 20);
+		lblIdealProbability.setBounds(15, 190, 117, 20);
 		panel.add(lblIdealProbability);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(176, 198, 92, 26);
-		panel.add(textField_3);
+		actualProb = new JTextField();
+		actualProb.setColumns(10);
+		actualProb.setBounds(176, 245, 92, 26);
+		panel.add(actualProb);
 		
 		JLabel lblActualProbability = new JLabel("Actual Probability");
-		lblActualProbability.setBounds(15, 201, 134, 20);
+		lblActualProbability.setBounds(15, 248, 134, 20);
 		panel.add(lblActualProbability);
 		
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Replacement");
-		chckbxNewCheckBox.setBounds(73, 236, 139, 29);
-		panel.add(chckbxNewCheckBox);
+		replacement = new JCheckBox("Replacement");
+		replacement.setBounds(75, 314, 139, 29);
+		panel.add(replacement);
+		
+		JLabel lblnumDraws = new JLabel("No. of Draws");
+		lblnumDraws.setBounds(15, 83, 106, 20);
+		panel.add(lblnumDraws);
+		
+		numDraws = new JTextField();
+		numDraws.setColumns(10);
+		numDraws.setBounds(176, 80, 92, 26);
+		panel.add(numDraws);
 		
 		JPanel panel_5 = new JPanel();
 		panel_5.setBounds(335, 0, 1070, 619);
@@ -129,10 +303,10 @@ public class Window {
 		lblIdeal.setBounds(15, 16, 69, 20);
 		panel_3.add(lblIdeal);
 		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(175, 407, 111, 26);
-		panel_3.add(textField_5);
+		actMean = new JTextField();
+		actMean.setColumns(10);
+		actMean.setBounds(175, 407, 111, 26);
+		panel_3.add(actMean);
 		
 		JLabel lblMean = new JLabel("Mean");
 		lblMean.setBounds(49, 410, 69, 20);
@@ -154,25 +328,25 @@ public class Window {
 		lblMode.setBounds(49, 554, 69, 20);
 		panel_3.add(lblMode);
 		
-		textField_6 = new JTextField();
-		textField_6.setColumns(10);
-		textField_6.setBounds(175, 443, 111, 26);
-		panel_3.add(textField_6);
+		actVar = new JTextField();
+		actVar.setColumns(10);
+		actVar.setBounds(175, 443, 111, 26);
+		panel_3.add(actVar);
 		
-		textField_7 = new JTextField();
-		textField_7.setColumns(10);
-		textField_7.setBounds(175, 479, 111, 26);
-		panel_3.add(textField_7);
+		actSD = new JTextField();
+		actSD.setColumns(10);
+		actSD.setBounds(175, 479, 111, 26);
+		panel_3.add(actSD);
 		
-		textField_8 = new JTextField();
-		textField_8.setColumns(10);
-		textField_8.setBounds(175, 515, 111, 26);
-		panel_3.add(textField_8);
+		actMed = new JTextField();
+		actMed.setColumns(10);
+		actMed.setBounds(175, 515, 111, 26);
+		panel_3.add(actMed);
 		
-		textField_9 = new JTextField();
-		textField_9.setColumns(10);
-		textField_9.setBounds(175, 551, 111, 26);
-		panel_3.add(textField_9);
+		actMode = new JTextField();
+		actMode.setColumns(10);
+		actMode.setBounds(175, 551, 111, 26);
+		panel_3.add(actMode);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBounds(15, 50, 505, 305);
@@ -182,19 +356,19 @@ public class Window {
 		panel_5.add(panel_4);
 		panel_4.setLayout(null);
 		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(174, 445, 111, 26);
-		panel_4.add(textField_4);
+		ideVar = new JTextField();
+		ideVar.setColumns(10);
+		ideVar.setBounds(174, 445, 111, 26);
+		panel_4.add(ideVar);
 		
 		JLabel lblIdeal_1 = new JLabel("IDEAL");
 		lblIdeal_1.setBounds(15, 14, 102, 20);
 		panel_4.add(lblIdeal_1);
 		
-		textField_10 = new JTextField();
-		textField_10.setColumns(10);
-		textField_10.setBounds(174, 409, 111, 26);
-		panel_4.add(textField_10);
+		ideMean = new JTextField();
+		ideMean.setColumns(10);
+		ideMean.setBounds(174, 409, 111, 26);
+		panel_4.add(ideMean);
 		
 		JLabel label_1 = new JLabel("Mean");
 		label_1.setBounds(48, 412, 69, 20);
@@ -216,31 +390,157 @@ public class Window {
 		label_5.setBounds(48, 556, 69, 20);
 		panel_4.add(label_5);
 		
-		textField_11 = new JTextField();
-		textField_11.setColumns(10);
-		textField_11.setBounds(174, 553, 111, 26);
-		panel_4.add(textField_11);
+		ideMode = new JTextField();
+		ideMode.setColumns(10);
+		ideMode.setBounds(174, 553, 111, 26);
+		panel_4.add(ideMode);
 		
-		textField_12 = new JTextField();
-		textField_12.setColumns(10);
-		textField_12.setBounds(174, 517, 111, 26);
-		panel_4.add(textField_12);
+		ideMedian = new JTextField();
+		ideMedian.setColumns(10);
+		ideMedian.setBounds(174, 517, 111, 26);
+		panel_4.add(ideMedian);
 		
-		textField_13 = new JTextField();
-		textField_13.setColumns(10);
-		textField_13.setBounds(174, 481, 111, 26);
-		panel_4.add(textField_13);
+		ideSD = new JTextField();
+		ideSD.setColumns(10);
+		ideSD.setBounds(174, 481, 111, 26);
+		panel_4.add(ideSD);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBounds(15, 50, 505, 305);
 		panel_4.add(panel_2);
 		
 		JPanel panel_6 = new JPanel();
-		panel_6.setBounds(15, 16, 305, 219);
+		panel_6.setBounds(15, 16, 305, 171);
 		frame.getContentPane().add(panel_6);
 		panel_6.setLayout(new CardLayout(0, 0));
 		
-		JTextArea textArea = new JTextArea();
-		panel_6.add(textArea, "name_405083374200043");
+		log = new JTextArea();
+		panel_6.add(log);
 	}
+	
+	public void process(int numCards, int nTrials, int desiredTotal, Deck deck,int wdTotal, int wodTotal){
+		
+		try{
+			PrintWriter writer = new PrintWriter("output.txt", "UTF-8");
+            for (int i = 0; i < nTrials; i++) {
+                deck.shuffle();
+                Cards[] withReplacement = DrawWithReplacement(deck,numCards);
+        		Cards[] withoutReplacement =DrawWithoutReplacement(deck,numCards);
+        		int wTotal = GetTotal(withReplacement,numCards);
+        		int woTotal = GetTotal(withoutReplacement,numCards);
+        		
+        		if(desiredTotal==wTotal)
+        			wdTotal++;
+        		else if(desiredTotal==woTotal)
+        			wodTotal++;
+        		
+                writeFile( writer, deck, i, numCards,withReplacement,withoutReplacement,wdTotal,wodTotal);
+                
+                if(replacement.isSelected()) {
+                	log.append(""+ wTotal +"\n");
+                }
+                
+                else {
+                	log.append(""+ woTotal +  "\n" );
+                	
+                }
+                
+                deck.ResetDeck();
+            }
+            
+            writer.println("actual probability with replacement: " + (float)wdTotal/(float)nTrials);            
+            writer.println("actual probability without replacement: " + (float)wodTotal/(float)nTrials);
+            
+            
+            
+            if(replacement.isSelected()) {
+            	actualProb.setText("" + (float)wdTotal/(float)nTrials);
+            }
+            
+            else {
+            	actualProb.setText(""+ (float)wodTotal/(float)nTrials);
+            	
+            }
+            
+            writer.close();
+            
+            
+		} catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	
+	//puts all cards drawn in an array - without replacement
+	private Cards[] DrawWithoutReplacement(Deck deck,int numCards){
+		Cards[] withoutReplacement = new Cards[numCards];
+		
+		for(int i=0;i<numCards;i++){
+			withoutReplacement[i] = deck.drawCardwithoutReplacement();
+		}
+		return withoutReplacement;
+	}
+	
+	//puts all cards drawn in an array - with replacement
+	private Cards[] DrawWithReplacement(Deck deck,int numCards){
+		Cards[] withReplacement = new Cards[numCards];
+		
+		for(int i=0;i<numCards;i++){
+			withReplacement[i] = deck.drawCardwithReplacement();
+		}
+		return withReplacement;
+	}
+	
+	//get sum of a draw card. use this function to get sum of with replacement and without replacement
+	private int GetTotal(Cards[] drawCards,int numCards){
+		int total = 0;
+		
+		for(int i=0;i<numCards;i++){
+			total += drawCards[i].getValue();
+		}
+		
+		return total;
+	}
+
+
+	//write on file
+	private void writeFile(PrintWriter writer, Deck deck, int i, int numCards, Cards[] withReplacement, Cards[] withoutReplacement,int wdTotal, int wodTotal) {
+		// TODO Auto-generated method stub
+		
+//		
+//		writer.println("Trial #" + (i+1));
+//		
+//		
+//		writer.println("Without replacement: ");
+//		for(int j=0; j< numCards; j++){
+//			writer.println("Card #" + (j+1) );
+//			writer.println("Card: "  + withoutReplacement[j].getRank()+ " of "  + withoutReplacement[j].getSuit() );
+//			
+//		}
+//		
+//		writer.println("With replacement: ");
+//		for(int j=0; j<numCards; j++){
+//			writer.println("Card #" + (j+1) );
+//			writer.println("Card: " + withReplacement[j].getRank()+ " of "+ withReplacement[j].getSuit());
+//		}
+		
+		/*
+        for (int j = 0; j < numCards; j++) {
+            Cards withoutReplacement = deck.drawCardwithoutReplacement();
+            woTotal += withoutReplacement.getValue();
+            writer.println("Card #" + (j+1) );
+            writer.println("Without replacement: ");
+            writer.println("Card: "  + withoutReplacement.getRank()+ " of "  + withoutReplacement.getSuit() );
+            Cards withReplacement = deck.drawCardwithReplacement();
+            wTotal += withReplacement.getValue();
+            writer.println("With replacement: ");
+            writer.println("Card: " + withReplacement.getRank()+ " of "+ withReplacement.getSuit()   );
+            writer.println("\n");
+        }
+        */
+		
+        writer.println("Without replacement total: \n" + GetTotal(withoutReplacement,numCards));
+        writer.println("With replacement total: \n" + GetTotal(withReplacement,numCards));
+        writer.println("\n");
+	}
+	
 }

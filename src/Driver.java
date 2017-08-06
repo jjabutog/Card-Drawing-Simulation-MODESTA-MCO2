@@ -29,11 +29,6 @@ public final class Driver {
 		System.out.println("desired sum:");
 		desiredTotal = sc.nextInt();
 		
-		
-		
-		
-		
-
 		process(numCards,nTrials,desiredTotal,deck,wdTotal,wodTotal);
 		
 		System.out.println("oks");
