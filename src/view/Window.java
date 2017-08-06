@@ -196,7 +196,9 @@ public class Window {
 	private JTextArea log;
 	private Rengine engine; 
 	private double maxIdealProb;
-    
+	
+	private ArrayList<Integer> trialTotalsWRep = new ArrayList<>();
+	private ArrayList<Integer> trialTotalsWORep = new ArrayList<>();
 
 
 	/**
@@ -226,6 +228,7 @@ public class Window {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
 
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1427, 675);
@@ -282,6 +285,7 @@ public class Window {
         		int[] allTotals = idealCombinations(numCards);
         		double[] probs = idealTotals(numCards, possibleTotals);
         		
+        		
         		engine.rniPutIntArray(allTotals);
         		engine.assign("allTotals", allTotals);
         		System.out.print(""+ engine.eval("allTotals"));
@@ -293,6 +297,45 @@ public class Window {
         		ideMode.setText("" + engine.eval("as.numeric(names(sort(-table(allTotals))))").asDouble());
         		ideMedian.setText("" + engine.eval("median(  allTotals )").asDouble());
         		
+        		
+        		int[] freqCountActual = new int[possibleTotals.length];
+        		
+        	
+        		
+        		
+        		int[] nativeTrials = new int[nTrials];
+        		
+        		if(replacement.isSelected()) {
+        			for(int i = 0; i <nativeTrials.length; i++) {
+        				nativeTrials[i] = trialTotalsWRep.get(i);
+        			}
+        	            		
+        		}
+        		
+        		else {
+        			for(int i = 0; i <nativeTrials.length; i++) {
+        				nativeTrials[i] = trialTotalsWORep.get(i);
+        			}
+        			
+        		}
+        		
+        		
+        		Arrays.sort(nativeTrials);
+        		
+        		freqCountActual = frequencyCount(possibleTotals, nativeTrials);
+        		
+        		engine.rniPutIntArray(nativeTrials);
+        		engine.assign("nativeTrials", nativeTrials);
+        		System.out.print(""+ engine.eval("nativeTrials"));
+        		
+        		
+        		actMean.setText("" + engine.eval("mean( nativeTrials )").asDouble() );
+        		actSD.setText(""  + engine.eval("sd(nativeTrials )").asDouble());
+        		actVar.setText("" + engine.eval("var(  nativeTrials )").asDouble());
+        		actMode.setText("" + engine.eval("as.numeric(names(sort(-table(nativeTrials))))").asDouble());
+        		actMed.setText("" + engine.eval("median(  nativeTrials )").asDouble());
+        		
+        		makeFrequencyChart(freqCountActual, possibleTotals, "Actual Probabilities");
         		makeHistogram(probs, possibleTotals, "Ideal Probabilities");
         		
             }
@@ -467,10 +510,12 @@ public class Window {
 	}
 	
 	public void process(int numCards, int nTrials, int desiredTotal, Deck deck,int wdTotal, int wodTotal){
-		
+				trialTotalsWORep.clear();
+				trialTotalsWRep.clear();
 		try{
 			PrintWriter writer = new PrintWriter("output.txt", "UTF-8");
             for (int i = 0; i < nTrials; i++) {
+           	
                 deck.shuffle();
                 Cards[] withReplacement = DrawWithReplacement(deck,numCards);
         		Cards[] withoutReplacement =DrawWithoutReplacement(deck,numCards);
@@ -486,27 +531,30 @@ public class Window {
                 
                 if(replacement.isSelected()) {
                 	log.append(""+ wTotal +"\n");
+                	trialTotalsWRep.add(wTotal);
+                	
                 }
                 
                 else {
                 	log.append(""+ woTotal +  "\n" );
-                	
+                	trialTotalsWORep.add(wTotal);
+
                 }
                 
                 deck.ResetDeck();
             }
             
-            writer.println("actual probability with replacement: " + (float)wdTotal/(float)nTrials);            
-            writer.println("actual probability without replacement: " + (float)wodTotal/(float)nTrials);
+            writer.println("actual probability with replacement: " + (double)wdTotal/(double)nTrials);            
+            writer.println("actual probability without replacement: " + (double)wodTotal/(double)nTrials);
             
             
             
             if(replacement.isSelected()) {
-            	actualProb.setText("" + (float)wdTotal/(float)nTrials);
+            	actualProb.setText("" + (double)wdTotal/(double)nTrials);
             }
             
             else {
-            	actualProb.setText(""+ (float)wodTotal/(float)nTrials);
+            	actualProb.setText(""+ (double)wodTotal/(double)nTrials);
             	idealProb.setText(""+ idealTotal(numCards, desiredTotal));
             }
             
@@ -629,11 +677,38 @@ public class Window {
 //		
 //	}
 //	
-	private double[] computeIdealProbabilities(int[] possibleSums) {
+
+	
+	private int[] frequencyCount(int[] possibleSums, int[] trialTotals) {
+		int[] freq = new int[possibleSums.length];
+			
+			for(int i = 0; i < freq.length; i++) {
+				freq[i] = 0;
+			}
+		
+			for(int i = 0; i < possibleSums.length; i++) {
+				for(int j = 0; j < trialTotals.length; j++) {
+					if(possibleSums[i] == trialTotals[j]) {
+						freq[i]++;
+					}
+				}
+				
+			}
+			
+			System.out.println(" ");
+
+			for(int i = 0; i < freq.length; i++) {
+				System.out.print(freq[i] + " ");
+			}
+			System.out.println(" ");
+
+			for(int i = 0; i < trialTotals.length; i++) {
+				System.out.print(trialTotals[i] + " ");
+			}
 		
 		
-		double[] array = new double[2];
-		return array;
+		return freq;
+		
 	}
 	
 	private int[] computeTotalPossibleSums(int numDraws, boolean wReplacement) {
@@ -763,7 +838,46 @@ public class Window {
 		
 	}
 
+	public void makeFrequencyChart(int[] frequencyCount, int[]possibleSums, String title){
+		
+		double[] values = new double[frequencyCount.length];
+		
+		
+		for(int i=0; i<frequencyCount.length; i++){
+			values[i] = frequencyCount[i];
+		}
+		
+		
+		String[] sampleLabels = new String[frequencyCount.length];
+		for(int i =0 ; i< sampleLabels.length; i++){
+			sampleLabels[i]= Integer.toString(i+1);
+		}
+		String[] legendLabels = new String[frequencyCount.length];
+		for(int i =0 ; i< legendLabels.length; i++){
+			legendLabels[i]= Double.toString(frequencyCount.length);
+		}
+		
+    	Color[] c = new Color[] {new Color(0xFF7310)};
+    	BarChart chart = new BarChart();
 
+    	chart.setSampleCount(frequencyCount.length);
+    	chart.setSampleValues(0, values);
+    	chart.setSampleColors(c);
+    	chart.setBackground(Color.white);
+    	chart.setRange(0, possibleSums[possibleSums.length-1] + 1);
+    	chart.setTitle(title);
+    	chart.setTitleOn(true);
+    	chart.setSampleLabels(sampleLabels);
+    	chart.getBarLabels();
+        chart.setBarLabelsOn(true);
+    	chart.setLegendLabels(legendLabels);
+    	
+    	Frame f = new Frame();
+    	f.setSize(450,320);
+    	f.add("Center", chart);
+    	f.setVisible(true);
+	}
+	
 	//write on file
 	private void writeFile(PrintWriter writer, Deck deck, int i, int numCards, Cards[] withReplacement, Cards[] withoutReplacement,int wdTotal, int wodTotal) {
 		// TODO Auto-generated method stub
