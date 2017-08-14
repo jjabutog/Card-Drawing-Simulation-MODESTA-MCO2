@@ -337,7 +337,8 @@ public class Window {
         		
         		makeFrequencyChart(freqCountActual, possibleTotals, "Actual Probabilities");
         		makeProbabilityChart(probs, possibleTotals, "Ideal Probabilities");
-        		
+        		double binomial = computeBinomial(idealTotal(numCards, desiredTotal), nTrials, desiredTotal);
+        		double negativeBinomial = computeNegativeBinomial(idealTotal(numCards, desiredTotal), nTrials, desiredTotal);
             }
         });
 		
@@ -711,9 +712,14 @@ public class Window {
 		
 	}
 	
+	
+	
 	private int[] computeTotalPossibleSums(int numDraws, boolean wReplacement) {
 	   
-		String deckVector = "c(1,2,3,4,5,6,7,8,9,10,11,12,13,1,2,3,4,5,6,7,8,9,10,11,12,13,1,2,3,4,5,6,7,8,9,10,11,12,13,1,2,3,4,5,6,7,8,9,10,11,12,13)";
+		String deckVector = "c(1,2,3,4,5,6,7,8,9,10,11,12,13,"
+				+ "1,2,3,4,5,6,7,8,9,10,11,12,13,"
+				+ "1,2,3,4,5,6,7,8,9,10,11,12,13,"
+				+ "1,2,3,4,5,6,7,8,9,10,11,12,13)";
 	    		     
 	    
 	    String deckVector2 = "c(1,2,3,4,5,6,7,8,9,10,11,12,13)";
@@ -837,6 +843,35 @@ public class Window {
 	    return intPosTotal5Rep;
 		
 	}
+	
+	private double computeBinomial(double idealProb, int numTrials, int desiredTotal){
+		double binomial =0.0;
+		System.out.println("compute binomial");
+		REXP posTotal1 = engine.eval("dbinom("+ desiredTotal+","+numTrials+","+idealProb+")");
+	    binomial = posTotal1.asDouble();
+	    engine.eval("png(file = 'C:/Users/testAcc/Desktop/charts/binomial.png')");
+	    engine.eval("barplot(dbinom(0:"+desiredTotal+","+numTrials+","+idealProb+ "))");
+	    engine.eval("dev.off()");
+	    
+	    System.out.println("dbinom(0:"+desiredTotal+","+numTrials+","+idealProb
+	    		+",main='Binomial Probability Distribution of Desired Total', xlab='Frequency count of desired total', ylab = 'probability  density')");
+
+		
+		return binomial;
+	}
+	
+	private double computeNegativeBinomial(double idealProb, int numTrials, int desiredTotal){
+		double binomial =0.0;
+		REXP posTotal1 = engine.eval("dnbinom("+ desiredTotal+","+numTrials+","+idealProb+")");
+	    binomial = posTotal1.asDouble();
+		engine.eval("png(file = 'C:/Users/testAcc/Desktop/charts/negativebinomial.png')");
+		System.out.println("dnbinom(0:"+desiredTotal+","+numTrials+","+idealProb+",main='Negative Binomial Probability Distribution of Desired Total', xlab='Frequency count of desired total', ylab = 'probability  density')");
+		engine.eval("barplot(dnbinom(0:"+desiredTotal+","+numTrials+","+idealProb+"))");
+
+		engine.eval("dev.off()");
+		return binomial;
+	}
+	
 
 	public void makeFrequencyChart(int[] frequencyCount, int[]possibleSums, String title){
 		
@@ -920,6 +955,7 @@ public class Window {
         writer.println("Without replacement total: \n" + GetTotal(withoutReplacement,numCards));
         writer.println("With replacement total: \n" + GetTotal(withReplacement,numCards));
         writer.println("\n");
+        
 	}
 	
 	public void makeProbabilityChart(double[] sampleValues, int[] possibleTotals, String title){
